@@ -2,11 +2,9 @@ generator client {
   provider = "prisma-client"
   output   = "./generated/prisma"
   binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x", "linux-arm64-openssl-1.1.x"]
-
-  // Optional Prisma Client Generator configuration
-  runtime                = "nodejs" // <-- Important part 2
+  runtime                = "nodejs"
   moduleFormat           = "cjs"
-  generatedFileExtension = "ts" // <-- Important part 3
+  generatedFileExtension = "ts" 
 }
 
 datasource db {
