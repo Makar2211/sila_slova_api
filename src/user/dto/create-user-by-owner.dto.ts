@@ -6,12 +6,12 @@ export class CreateUserByOwnerDto {
   email!: string;
 
   @IsString()
-  name!: string;
+  displayName!: string;
 
   @IsString()
   @MinLength(6)
   password!: string;
 
   @IsEnum(Role)
-  role!: Role;
+  baseRole!: Role;
 }

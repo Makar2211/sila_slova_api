@@ -5,7 +5,7 @@ export class RegisterDto {
   email!: string;
 
   @IsString()
-  name!: string;
+  displayName!: string;
 
   @IsString()
   @MinLength(6)

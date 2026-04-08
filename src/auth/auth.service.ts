@@ -14,7 +14,7 @@ export class AuthService {
 
   async register(dto: RegisterDto) {
     const user = await this.userService.create(dto);
-    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.role });
+    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.baseRole });
     return { user, access_token: token };
   }
 
@@ -22,11 +22,11 @@ export class AuthService {
     const user = await this.userService.findByEmail(dto.email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
-    const passwordMatch = await bcrypt.compare(dto.password, user.password);
+    const passwordMatch = await bcrypt.compare(dto.password, user.passwordHash);
     if (!passwordMatch) throw new UnauthorizedException('Invalid credentials');
 
-    const { password, ...result } = user;
-    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.role });
+    const { passwordHash: _, ...result } = user;
+    const token = this.jwtService.sign({ sub: user.id, email: user.email, role: user.baseRole });
     return { user: result, access_token: token };
   }
 }
