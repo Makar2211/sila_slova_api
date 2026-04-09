@@ -11,12 +11,17 @@ export class UserService {
     const existing = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (existing) throw new ConflictException('User with this email already exists');
 
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const passwordHash = await bcrypt.hash(dto.password, 10);
     const user = await this.prisma.user.create({
-      data: { email: dto.email, name: dto.name, password: hashedPassword, role: dto.role },
+      data: {
+        email: dto.email,
+        displayName: dto.displayName,
+        passwordHash,
+        baseRole: dto.baseRole ?? 'STUDENT',
+      },
     });
 
-    const { password, ...result } = user;
+    const { passwordHash: _, ...result } = user;
     return result;
   }
 
@@ -24,10 +29,10 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { email } });
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) return null;
-    const { password, ...result } = user;
+    const { passwordHash: _, ...result } = user;
     return result;
   }
 }

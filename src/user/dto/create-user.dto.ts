@@ -6,7 +6,7 @@ export class CreateUserDto {
   email!: string;
 
   @IsString()
-  name!: string;
+  displayName!: string;
 
   @IsString()
   @MinLength(6)
@@ -14,5 +14,5 @@ export class CreateUserDto {
 
   @IsEnum(Role)
   @IsOptional()
-  role?: Role;
+  baseRole?: Role;
 }
